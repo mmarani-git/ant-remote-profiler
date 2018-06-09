@@ -1,0 +1,1 @@
+call mvn wildfly:deploy -Dforce=true
