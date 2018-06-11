@@ -15,7 +15,7 @@
 		<class>eu.dedalus.cis.tools.antremoteprofiler.server.persistence.ProfiledTaskEntity</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:oracle:thin:@//localhost:1521/XE" />
+				value="jdbc:oracle:thin:@//172.19.226.147:1521/C4C" />
 			<property name="javax.persistence.jdbc.user"
 				value="buildprofiler" />
 			<property name="javax.persistence.jdbc.password"
