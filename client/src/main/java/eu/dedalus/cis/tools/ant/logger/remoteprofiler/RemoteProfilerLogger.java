@@ -38,6 +38,9 @@ public class RemoteProfilerLogger extends DefaultLogger {
 		super.buildFinished(event);
 		profiledBuild.setEnd(new Date());
 		
+		Throwable error = event.getException();
+		profiledBuild.setSuccess(error==null);
+		
 		ProfilerHttpClient client = new ProfilerHttpClient(profiledBuild);
 		client.send();
 	}

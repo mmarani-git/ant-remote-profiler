@@ -14,6 +14,7 @@ public class ProfiledBuildDTO {
 	private Date end;
 	private String projectName;
 	private List<ProfiledTargetDTO> targets=new Vector<ProfiledTargetDTO>();
+	private Boolean success;
 	
 	public ProfiledBuildDTO() {};
 	
@@ -23,9 +24,19 @@ public class ProfiledBuildDTO {
 		start = (Date) build.getStart().clone();
 		end = (Date) build.getEnd().clone();
 		projectName = build.getProject().getName();
+		success = build.getSuccess();
+		
 		for(ProfiledTarget target : build.getProfiledTargets()) {
 			targets.add(new ProfiledTargetDTO(target));
 		}
+	}
+
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
 	}
 
 	public String getUsername() {

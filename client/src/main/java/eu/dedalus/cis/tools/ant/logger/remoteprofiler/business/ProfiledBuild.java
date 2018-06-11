@@ -24,6 +24,7 @@ public class ProfiledBuild {
 	private Project project;
 	private Map<Target, ProfiledTarget> targetsMap = new HashMap<>();
 	private List<ProfiledTarget> profiledTargets = new Vector<>();
+	private Boolean success;
 	
 	public ProfiledBuild(String username, String hostname, Date start, Project project) {
 		super();
@@ -33,6 +34,15 @@ public class ProfiledBuild {
 		this.project = project;
 	}
 	
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+
+
 	public String getUsername() {
 		return username;
 	}

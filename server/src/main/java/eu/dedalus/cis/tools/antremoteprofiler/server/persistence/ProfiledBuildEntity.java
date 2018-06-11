@@ -35,6 +35,8 @@ public class ProfiledBuildEntity {
 	        mappedBy="build"
 	    )
 	private List<ProfiledTargetEntity> targets=new Vector<ProfiledTargetEntity>();
+	@Column
+	private Boolean success;
 	
 	public ProfiledBuildEntity() {	}
 
@@ -44,11 +46,20 @@ public class ProfiledBuildEntity {
 		start=(Date) dto.getStart().clone();
 		end=(Date) dto.getEnd().clone();
 		projectName=dto.getProjectName();
+		success = dto.getSuccess();
 		for(ProfiledTargetDTO target : dto.getTargets()) {
 			targets.add(new ProfiledTargetEntity(target,this));
 		}
 	}
 	
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+
 	public Long getId() {
 		return id;
 	}
