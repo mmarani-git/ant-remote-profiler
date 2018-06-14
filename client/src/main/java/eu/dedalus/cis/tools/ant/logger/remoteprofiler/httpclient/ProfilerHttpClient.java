@@ -56,7 +56,7 @@ public class ProfilerHttpClient {
 		StringEntity stringEntity = null;
 		try {
 			stringEntity = new StringEntity(profiledBuild.toJSON());
-			request.addHeader("content-type", "application/x-www-form-urlencoded");
+			request.addHeader("content-type", "application/JSON");
 			request.setEntity(stringEntity);
 			httpClient.execute(request);
 		} catch (IOException e) {
