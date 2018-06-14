@@ -9,12 +9,10 @@ import java.util.List;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Target;
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.launch.Launcher;
 
 import eu.dedalus.cis.tools.ant.logger.remoteprofiler.business.ProfiledBuild;
 import eu.dedalus.cis.tools.ant.logger.remoteprofiler.business.ProfiledTarget;
-import eu.dedalus.cis.tools.ant.logger.remoteprofiler.business.ProfiledTask;
 import eu.dedalus.cis.tools.ant.logger.remoteprofiler.httpclient.ProfilerHttpClient;
 
 public class RemoteProfilerLogger extends DefaultLogger {
@@ -82,44 +80,6 @@ public class RemoteProfilerLogger extends DefaultLogger {
 		profiledBuild.getProfiledTarget(event.getTarget()).setEnd(new Date());
 	}
 	
-	private boolean isTaskEvent(BuildEvent event) {
-		if(event.getTask()==null) {
-			profiledBuild.getProject().log("[eu.dedalus.cis.tools.ant.logger.remoteprofiler.RemoteProfilerLogger] taskStarted but null task!");
-			return false;
-		}
-		
-		return true;
-	}
-	
-	private boolean isTaskWithTarget(BuildEvent event ) {
-		if(!isTaskEvent(event))
-			return false;
-		
-		Target target = event.getTask().getOwningTarget();
-		if(target==null) {
-			profiledBuild.getProject().log("[eu.dedalus.cis.tools.ant.logger.remoteprofiler.RemoteProfilerLogger] taskStarted but task has empty target!");
-			return false;
-		}
-		
-		return true;
-	}
-	
-	@Override
-	public void taskStarted(BuildEvent event) {
-		super.taskStarted(event);
-		
-		if(!isTaskWithTarget(event))
-			return;
-		
-		Target target = event.getTask().getOwningTarget();
-		if (!isTargetStarted(target)) {
-			return;
-		}
-		
-		ProfiledTask profiledTask = new ProfiledTask(event.getTask(),new Date());
-		profiledBuild.getProfiledTarget(target).addProfiledTask(profiledTask);
-	}
-	
 	private boolean isTargetStarted(Target target) {
 		if (!profiledBuild.containsTarget(target)) {
 			profiledBuild.getProject().log("[eu.dedalus.cis.tools.ant.logger.remoteprofiler.RemoteProfilerLogger] targetFinished not registered at start");
@@ -127,27 +87,6 @@ public class RemoteProfilerLogger extends DefaultLogger {
 		}
 		
 		return true;
-	}
-
-	@Override
-	public void taskFinished(BuildEvent event) {
-		super.taskFinished(event);
-		
-		if(!isTaskWithTarget(event))
-			return;
-		
-		Task task = event.getTask(); 
-		Target target = task.getOwningTarget();
-		if(!isTargetStarted(target))
-			return;
-		
-		ProfiledTarget profiledTarget = profiledBuild.getProfiledTarget(target); 
-		if(!profiledTarget.containsTask(task)) {
-			profiledBuild.getProject().log("[eu.dedalus.cis.tools.ant.logger.remoteprofiler.RemoteProfilerLogger] taskFinished not registered at start");
-			return;
-		}
-		
-		profiledTarget.getProfiledTask(task).setEnd(new Date());
 	}
 	
 	/**
@@ -160,9 +99,6 @@ public class RemoteProfilerLogger extends DefaultLogger {
 		System.out.println(profiledBuild);
 		for(ProfiledTarget target : profiledBuild.getProfiledTargets()) {
 			System.out.println("\t"+target);
-			for(ProfiledTask task : target.getProfiledTasks()) {
-				System.out.println("\t\t"+task);
-			}
 		}
 	}
 	

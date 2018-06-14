@@ -1,8 +1,6 @@
 package eu.dedalus.cis.tools.antremoteprofiler.server.persistence;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,11 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import eu.dedalus.cis.tools.ant.logger.remoteprofiler.dto.ProfiledTargetDTO;
-import eu.dedalus.cis.tools.ant.logger.remoteprofiler.dto.ProfiledTaskDTO;
+
 
 @Entity
 @Table(name="PROFILED_TARGET")
@@ -29,11 +26,6 @@ public class ProfiledTargetEntity {
 	@Column(name="end_ts")
 	private Date end;
 	
-	@OneToMany(
-	        cascade = CascadeType.PERSIST,
-	        mappedBy="target"
-	    )
-	private List<ProfiledTaskEntity> tasks = new Vector<ProfiledTaskEntity>();
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="id_build")
 	private ProfiledBuildEntity build;
@@ -43,9 +35,6 @@ public class ProfiledTargetEntity {
 		targetName=dto.getTargetName();
 		start = (Date) dto.getStart();
 		end = (Date) dto.getEnd().clone();
-		for (ProfiledTaskDTO task : dto.getTasks()) {
-			tasks.add(new ProfiledTaskEntity(task,this));
-		}
 		this.build=build;
 	}
 	
@@ -78,16 +67,5 @@ public class ProfiledTargetEntity {
 	}
 	public void setEnd(Date end) {
 		this.end = end;
-	}
-	public List<ProfiledTaskEntity> getTasks() {
-		return tasks;
-	}
-	public void setTasks(List<ProfiledTaskEntity> tasks) {
-		this.tasks = tasks;
-	}
-	@Override
-	public String toString() {
-		return "ProfiledTargetEntity [id=" + id + ", targetName=" + targetName + ", start=" + start + ", end=" + end
-				+ ", tasks=" + tasks + ", build=" + build + "]";
 	}
 }
