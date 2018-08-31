@@ -5,6 +5,9 @@ Stats are collected for whole builds and single targets. No tasks.
 The logger extends the default one so no feature is lost.
 Database is self-build by hibernate using the autoddl feature.
 
+Data is stored on a couple of tables: PROFILED_BUILD and PROFILED_TARGET
+and a couple of views, V_PROFILED_BUILD and V_PROFILED_TARGET are provided for better readability. See db directory.
+
 NOTE
 The database location is in server/persistence.xml and currently points to the C4C development database!
 
